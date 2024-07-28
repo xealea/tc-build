@@ -1,9 +1,10 @@
 name: Scheduled Release Workflow For Toolchain
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
-
+  push:
+    branches:
+      - main
+      
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -34,8 +35,7 @@ jobs:
       run: |
         # Make sure the script is executable
         chmod +x build.sh
-        chmod +x upload.dh
+        chmod +x upload.sh
         # Execute the script
         ./build.sh
         ./upload.sh
-        
