@@ -1,18 +1,41 @@
-name: Build test
+name: Scheduled Release Workflow For Toolchain
+
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * *'
+
 jobs:
-  build-test:
+  release:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Install dependencies
-      run: bash ci.sh deps
-    - name: Build LLVM
-      run: bash ci.sh llvm
-    - name: Build binutils
-      run: bash ci.sh binutils
-    - name: Build kernel
-      run: bash ci.sh kernel
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python (for jq and other tools)
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install jq and curl
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq curl
+
+    - name: Run release script
+      env:
+        GH_USER: ${{ secrets.GH_USER }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_REL_REPO: ${{ secrets.GH_REL_REPO }}
+        GH_BUILD_REPO: ${{ secrets.GH_BUILD_REPO }}
+        TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        GH_RUN_ID: ${{ github.run_id }}
+      run: |
+        # Make sure the script is executable
+        chmod +x build.sh
+        chmod +x upload.dh
+        # Execute the script
+        ./build.sh
+        ./upload.sh
+        
