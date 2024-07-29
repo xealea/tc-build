@@ -1,0 +1,9 @@
+inefficient_task:
+  container:
+    image: debian:latest
+    platform: linux
+    cpu: 8
+    memory: 32G
+  build_script:
+    - chmod +x locally.sh
+    - ./locally.sh
