@@ -26,7 +26,7 @@ sudo apt-get install -y \
   git \
   libelf-dev \
   libssl-dev \
-  libstdc++-dev \
+  libstdc++-$(apt list libstdc++6 2>/dev/null | grep -Eos '[0-9]+\.[0-9]+\.[0-9]+' | head -1 | cut -d . -f 1)-dev \
   lld \
   make \
   ninja-build \
