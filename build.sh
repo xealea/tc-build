@@ -5,9 +5,6 @@ msg() {
     echo "$1"
 }
 
-# Don't touch repo if running on CI
-[ -z "$GH_RUN_ID" ] && repo_flag="--shallow-clone" || repo_flag="--no-update"
-
 # Build LLVM and Binutils
 msg "Building LLVM and Binutils..."
 ./build-llvm.py \
@@ -15,7 +12,7 @@ msg "Building LLVM and Binutils..."
   --targets AArch64 ARM X86 \
   --pgo kernel-defconfig \
   --lto full \
-  "$repo_flag"
+  --shallow-clone
 
 ./build-binutils.py \
   --targets arm aarch64 x86_64
