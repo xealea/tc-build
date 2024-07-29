@@ -4,10 +4,6 @@
 set -e
 
 # Export environment variables
-export GH_USER="your-value"
-export GH_TOKEN="your-value"
-export GH_REL_REPO="your-value"
-export GH_BUILD_REPO="your-value"
 export TG_CHAT_ID="your-value"
 export TG_TOKEN="your-value"
 
